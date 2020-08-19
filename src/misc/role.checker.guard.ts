@@ -4,7 +4,7 @@ import { Request } from 'express';
 import { Reflector } from "@nestjs/core";
 
 @Injectable()
-export class RollCheckerGuard implements CanActivate {
+export class RoleCheckerGuard implements CanActivate {
     constructor(private reflector: Reflector) {}
 
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {

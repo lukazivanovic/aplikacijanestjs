@@ -13,7 +13,7 @@ import * as fileType from 'file-type';
 import * as fs from 'fs';
 import * as sharp from 'sharp';
 import { EditArticleDto } from "src/dtos/article/edit.article.dto";
-import { RollCheckerGuard } from "src/misc/role.checker.guard";
+import { RoleCheckerGuard } from "src/misc/role.checker.guard";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
 
 @Controller('api/article')
@@ -48,7 +48,22 @@ import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
         }
     },
     routes: {
-        exclude: [ 'updateOneBase', 'replaceOneBase', 'deleteOneBase' ],
+        only: [
+            'getOneBase', 
+            'getManyBase', 
+        ],
+        getOneBase: {
+            decorators: [
+                UseGuards(RoleCheckerGuard),
+                AllowToRoles('administrator', 'user')
+            ],
+        },
+        getManyBase: {
+            decorators: [
+                UseGuards(RoleCheckerGuard),
+                AllowToRoles('administrator', 'user')
+            ],
+        },
     },
 })
 export class ArticleController {
@@ -57,22 +72,22 @@ export class ArticleController {
         public photoService: PhotoService,
         ) {  }
         
-    @Post('createFull') // POST http://localhost:3000/api/article/createFull/
-    @UseGuards(RollCheckerGuard)
+    @Post() // POST http://localhost:3000/api/article/
+    @UseGuards(RoleCheckerGuard)
     @AllowToRoles('administrator')
     createFullArticle(@Body() data: AddArticleDto) {
         return this.service.createFullArticle(data);
     }
 
     @Patch(':id') // PATCH http://localhost:3000/api/article/2/
-    @UseGuards(RollCheckerGuard)
+    @UseGuards(RoleCheckerGuard)
     @AllowToRoles('administrator')
     editFullArticle(@Param('id') id: number, @Body() data: EditArticleDto) {
         return this.service.editFullArticle(id, data);
     }
 
     @Post(':id/uploadPhoto/') // POST http:/localhost:3000/api/article/:id/uploadPhoto/
-    @UseGuards(RollCheckerGuard)
+    @UseGuards(RoleCheckerGuard)
     @AllowToRoles('administrator')
     @UseInterceptors(
         FileInterceptor('photo', {
@@ -186,7 +201,7 @@ export class ArticleController {
 
     // http:/localhost:3000/api/article/1/deletePhoto/45/
     @Delete(':articleId/deletePhoto/:photoId/')
-    @UseGuards(RollCheckerGuard)
+    @UseGuards(RoleCheckerGuard)
     @AllowToRoles('administrator')
     public async deletePhoto(
         @Param('articleId') articleId: number,
