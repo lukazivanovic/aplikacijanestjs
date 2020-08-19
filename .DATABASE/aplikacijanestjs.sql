@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2020 at 07:30 PM
+-- Generation Time: Aug 19, 2020 at 08:12 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `aukcija`
+-- Database: `aplikacijanestjs`
 --
 
 -- --------------------------------------------------------
