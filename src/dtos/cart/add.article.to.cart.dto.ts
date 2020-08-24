@@ -6,9 +6,9 @@ export class AddArticleToCartDto {
     @Validator.IsNotEmpty()
     @Validator.IsPositive()
     @Validator.IsNumber({
-      allowInfinity: false,
-      allowNaN: false,
-      maxDecimalPlaces: 0
+        allowInfinity: false,
+        allowNaN: false,
+        maxDecimalPlaces: 0,
     })
     quantity: number;
 }

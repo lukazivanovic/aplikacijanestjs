@@ -2,24 +2,24 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Cart } from "src/entities/cart.entity";
 import { Repository } from "typeorm";
-import { CartArticle } from "src/entities/cart-article.entity";
+import { CartArticle } from "src/entities/cart-article.entiry";
 import { Article } from "src/entities/article.entity";
 import { Order } from "src/entities/order.entity";
 
 @Injectable()
 export class CartService {
     constructor(
-        @InjectRepository(Cart) 
+        @InjectRepository(Cart)
         private readonly cart: Repository<Cart>,
-
-        @InjectRepository(CartArticle) 
+ 
+        @InjectRepository(CartArticle)
         private readonly cartArticle: Repository<CartArticle>,
     ) { }
 
-    async getLastActiveCartByUserId(userId: number): Promise<Cart | null>{
+    async getLastActiveCartByUserId(userId: number): Promise<Cart | null> {
         const carts = await this.cart.find({
             where: {
-                userId: userId
+                userId: userId,
             },
             order: {
                 createdAt: "DESC",
@@ -28,13 +28,13 @@ export class CartService {
             relations: [ "order" ],
         });
 
-        if(!carts || carts.length === 0) {
+        if (!carts || carts.length === 0) {
             return null;
         }
 
         const cart = carts[0];
 
-        if(cart.order !== null) {
+        if (cart.order !== null) {
             return null;
         }
 
@@ -53,7 +53,7 @@ export class CartService {
             articleId: articleId,
         });
 
-        if(!record){
+        if (!record) {
             record = new CartArticle();
             record.cartId = cartId;
             record.articleId = articleId;
@@ -85,10 +85,10 @@ export class CartService {
             articleId: articleId,
         });
 
-        if(record){
+        if (record) {
             record.quantity = newQuantity;
 
-            if(record.quantity === 0) {
+            if (record.quantity === 0) {
                 await this.cartArticle.delete(record.cartArticleId);
             } else {
                 await this.cartArticle.save(record);

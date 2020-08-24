@@ -5,7 +5,7 @@ export class LoginInfoDto {
     refreshToken: string;
     refreshTokenExpiresAt: string;
 
-    constructor(id: number, identity: string, jwt: string, refreshToken: string, refreshTokenExpiresAt: string){
+    constructor(id: number, identity: string, jwt: string, refreshToken: string, refreshTokenExpiresAt: string) {
         this.id = id;
         this.identity = identity;
         this.token = jwt;

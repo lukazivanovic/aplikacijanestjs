@@ -1,5 +1,5 @@
 import * as Validator from 'class-validator';
-import { ArticleSearchFeatureComponentDto } from './article.search.feature.component.dto';
+import { ArticleSearchDeatureComponentDto } from './article.search.feature.component.dto';
 
 export class ArticleSearchDto {
     @Validator.IsNotEmpty()
@@ -13,7 +13,7 @@ export class ArticleSearchDto {
 
     @Validator.IsOptional()
     @Validator.IsString()
-    @Validator.Length(2, 128)
+    @Validator.Length(0, 128)
     keywords: string;
 
     @Validator.IsOptional()
@@ -34,7 +34,7 @@ export class ArticleSearchDto {
     })
     priceMax: number;
 
-    features: ArticleSearchFeatureComponentDto[];
+    features: ArticleSearchDeatureComponentDto[];
 
     @Validator.IsOptional()
     @Validator.IsIn(['name', 'price'])

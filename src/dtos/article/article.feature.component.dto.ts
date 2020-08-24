@@ -5,6 +5,6 @@ export class ArticleFeatureComponentDto {
 
     @Validator.IsNotEmpty()
     @Validator.IsString()
-    @Validator.Length(1,255)
+    @Validator.Length(1, 255)
     value: string;
 }

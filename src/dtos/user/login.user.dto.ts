@@ -3,9 +3,9 @@ import * as Validator from 'class-validator';
 export class LoginUserDto {
     @Validator.IsNotEmpty()
     @Validator.IsEmail({
-      allow_ip_domain: false,
-      allow_utf8_local_part: true,
-      require_tld: true,
+        allow_ip_domain: false,
+        allow_utf8_local_part: true,
+        require_tld: true,
     })
     email: string;
 

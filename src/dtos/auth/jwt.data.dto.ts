@@ -13,7 +13,7 @@ export class JwtDataDto {
             identity: this.identity,
             exp: this.exp,
             ip: this.ip,
-            ua: this.ua
+            ua: this.ua,
         }
     }
 }

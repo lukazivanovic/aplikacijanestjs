@@ -4,7 +4,7 @@ import {
   Index,
   JoinColumn,
   OneToOne,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn
 } from "typeorm";
 import { Cart } from "./cart.entity";
 import * as Validator from 'class-validator';
@@ -18,27 +18,33 @@ export class Order {
   @Column({
     type: "timestamp",
     name: "created_at",
-    default: () => "CURRENT_TIMESTAMP",
+    default: () => "CURRENT_TIMESTAMP"
   })
   createdAt: Date;
 
-  @Column({type: "int", name: "cart_id", unique: true, unsigned: true })
+  @Column({
+    type: "int",
+    name: "cart_id",
+    unique: true,
+    unsigned: true
+  })
   cartId: number;
 
   @Column({
     type: "enum",
     enum: ["rejected", "accepted", "shipped", "pending"],
-    default: () => "'pending'",
+    default: () => "'pending'"
   })
   @Validator.IsNotEmpty()
   @Validator.IsString()
   @Validator.IsIn(["rejected", "accepted", "shipped", "pending"])
   status: "rejected" | "accepted" | "shipped" | "pending";
 
-  @OneToOne(() => Cart, (cart) => cart.order, {
-    onDelete: "RESTRICT",
-    onUpdate: "CASCADE",
-  })
+  @OneToOne(
+    () => Cart,
+    cart => cart.order,
+    { onDelete: "NO ACTION", onUpdate: "CASCADE" }
+  )
   @JoinColumn([{ name: "cart_id", referencedColumnName: "cartId" }])
   cart: Cart;
 }

@@ -22,9 +22,9 @@ export class AddArticleDto {
     @Validator.IsNotEmpty()
     @Validator.IsPositive()
     @Validator.IsNumber({
-      allowInfinity: false,
-      allowNaN: false,
-      maxDecimalPlaces: 2,
+        allowInfinity: false,
+        allowNaN: false,
+        maxDecimalPlaces: 2,
     })
     price: number;
 

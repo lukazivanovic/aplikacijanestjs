@@ -7,7 +7,7 @@ import { AdministratorService } from './services/administrator/administrator.ser
 import { ArticleFeature } from 'src/entities/article-feature.entity';
 import { ArticlePrice } from 'src/entities/article-price.entity';
 import { Article } from 'src/entities/article.entity';
-import { CartArticle } from 'src/entities/cart-article.entity';
+import { CartArticle } from 'src/entities/cart-article.entiry';
 import { Cart } from 'src/entities/cart.entity';
 import { Category } from 'src/entities/category.entity';
 import { Feature } from 'src/entities/feature.entity';
@@ -28,11 +28,12 @@ import { UserService } from './services/user/user.service';
 import { CartService } from './services/cart/cart.service';
 import { UserCartController } from './controllers/api/user.cart.controller';
 import { OrderService } from './services/order/order.service';
-import { MailerModule} from '@nestjs-modules/mailer';
+import { MailerModule } from '@nestjs-modules/mailer';
 import { MailConfig } from 'config/mail.config';
 import { OrderMailer } from './services/order/order.mailer.service';
 import { AdministratorOrderController } from './controllers/api/administrator.order.controller';
 import { UserToken } from './entities/user-token.entity';
+import { AdministratorToken } from './entities/administrator-token.entity';
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ import { UserToken } from './entities/user-token.entity';
       username: DatabaseConfiguration.username,
       password: DatabaseConfiguration.password,
       database: DatabaseConfiguration.database,
-      entities: [ 
+      entities: [
         Administrator,
         ArticleFeature,
         ArticlePrice,
@@ -56,9 +57,10 @@ import { UserToken } from './entities/user-token.entity';
         Photo,
         User,
         UserToken,
+        AdministratorToken,
       ]
     }),
-    TypeOrmModule.forFeature([ 
+    TypeOrmModule.forFeature([
       Administrator,
       ArticleFeature,
       ArticlePrice,
@@ -71,10 +73,11 @@ import { UserToken } from './entities/user-token.entity';
       Photo,
       User,
       UserToken,
+      AdministratorToken,
     ]),
     MailerModule.forRoot({
-      transport: 'smtps://' + MailConfig.username + ':' + 
-                              MailConfig.password + '@' + 
+      transport: 'smtps://' + MailConfig.username + ':' +
+                              MailConfig.password + '@' +
                               MailConfig.hostname,
       defaults: {
         from: MailConfig.senderEmail,
@@ -106,7 +109,7 @@ import { UserToken } from './entities/user-token.entity';
     AdministratorService,
     UserService,
   ],
- })
+})
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer

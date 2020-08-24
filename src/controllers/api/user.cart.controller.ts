@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards, Req, Post, Body, Patch } from "@nestjs/common";
 import { CartService } from "src/services/cart/cart.service";
-import { RoleCheckerGuard } from "src/misc/role.checker.guard";
+import { RoleCheckedGuard } from "src/misc/role.checker.guard";
 import { AllowToRoles } from "src/misc/allow.to.roles.descriptor";
 import { Cart } from "src/entities/cart.entity";
 import { Request } from "express";
@@ -17,59 +17,66 @@ export class UserCartController {
         private cartService: CartService,
         private orderService: OrderService,
         private orderMailer: OrderMailer,
-        ) {  }
+    ) { }
 
     private async getActiveCartForUserId(userId: number): Promise<Cart> {
         let cart = await this.cartService.getLastActiveCartByUserId(userId);
-        
-        if(!cart) {
-            cart = await this.cartService.createNewCartForUser(userId);
+
+        if (!cart) {
+            cart = await this.cartService.createNewCartForUser(userId)
         }
 
         return await this.cartService.getById(cart.cartId);
     }
 
     // GET http://localhost:3000/api/user/cart/
-    @Get() 
-    @UseGuards(RoleCheckerGuard)
+    @Get()
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('user')
     async getCurrentCart(@Req() req: Request): Promise<Cart> {
         return await this.getActiveCartForUserId(req.token.id);
     }
 
-    // POST http://localhost:3000/api/user/cart/addToCart
+    // POST http://localhost:3000/api/user/cart/addToCart/
     @Post('addToCart')
-    @UseGuards(RoleCheckerGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('user')
     async addToCart(@Body() data: AddArticleToCartDto, @Req() req: Request): Promise<Cart> {
         const cart = await this.getActiveCartForUserId(req.token.id);
-
         return await this.cartService.addArticleToCart(cart.cartId, data.articleId, data.quantity);
     }
 
-    //PATCH http://localhost:3000/api/user/cart/
+    // PATCH http://localhost:3000/api/user/cart/
     @Patch()
-    @UseGuards(RoleCheckerGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('user')
     async changeQuantity(@Body() data: EditArticleInCartDto, @Req() req: Request): Promise<Cart> {
         const cart = await this.getActiveCartForUserId(req.token.id);
         return await this.cartService.changeQuantity(cart.cartId, data.articleId, data.quantity);
     }
 
-    //POST http://localhost:3000/api/user/cart/makeOrder/
+    // POST http://localhost:3000/api/user/cart/makeOrder/
     @Post('makeOrder')
-    @UseGuards(RoleCheckerGuard)
+    @UseGuards(RoleCheckedGuard)
     @AllowToRoles('user')
     async makeOrder(@Req() req: Request): Promise<Order | ApiResponse> {
         const cart = await this.getActiveCartForUserId(req.token.id);
         const order = await this.orderService.add(cart.cartId);
 
-        if(order instanceof ApiResponse) {
+        if (order instanceof ApiResponse) {
             return order;
         }
 
-        //await this.orderMailer.sendOrderEmail(order);
+        await this.orderMailer.sendOrderEmail(order);
 
         return order;
+    }
+
+    // POST http://localhost:3000/api/user/cart/orders/
+    @Get('orders')
+    @UseGuards(RoleCheckedGuard)
+    @AllowToRoles('user')
+    async getOrders(@Req() req: Request): Promise<Order[]> {
+        return await this.orderService.getAllByUserId(req.token.id);
     }
 }
