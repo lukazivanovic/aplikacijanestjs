@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2020 at 06:30 PM
+-- Generation Time: Aug 24, 2020 at 07:31 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.1
 
@@ -60,6 +60,15 @@ CREATE TABLE `administrator_token` (
   `expires_at` datetime NOT NULL,
   `is_valid` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `administrator_token`
+--
+
+INSERT INTO `administrator_token` (`administrator_token_id`, `administrator_id`, `created_at`, `token`, `expires_at`, `is_valid`) VALUES
+(1, 7, '2020-08-24 17:10:32', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo3LCJpZGVudGl0eSI6ImFkbWluIiwiZXhwIjoxNjAwOTY3NDMyLjcwNiwiaXAiOiI6OjEiLCJ1YSI6Ik1vemlsbGEvNS4wIChXaW5kb3dzIE5UIDEwLjA7IFdpbjY0OyB4NjQpIEFwcGxlV2ViS2l0LzUzNy4zNiAoS0hUTUwsIGxpa2UgR2Vja28pIENocm9tZS84NC4wLjQxNDcuMTM1IFNhZmFyaS81MzcuMzYgRWRnLzg0LjAuNTIyLjYzIiwiaWF0IjoxNTk4Mjg5MDMyfQ.RG6LDjl3gLUBUH0_lHvh7skPqTXiLhDDsKRpVNtP3P4', '2020-09-24 17:10:32', 1),
+(2, 7, '2020-08-24 17:14:44', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo3LCJpZGVudGl0eSI6ImFkbWluIiwiZXhwIjoxNjAwOTY3Njg0LjcyNSwiaXAiOiI6OjEiLCJ1YSI6IlBvc3RtYW5SdW50aW1lLzcuMjYuMyIsImlhdCI6MTU5ODI4OTI4NH0.xkUKIqtVJh-vEuV2ckadR_QGn6uF-kH4qFIKxwkcPUE', '2020-09-24 17:14:44', 1),
+(3, 7, '2020-08-24 17:28:37', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW5pc3RyYXRvciIsImlkIjo3LCJpZGVudGl0eSI6ImFkbWluIiwiZXhwIjoxNjAwOTY4NTE3Ljg4LCJpcCI6Ijo6MSIsInVhIjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzg0LjAuNDE0Ny4xMzUgU2FmYXJpLzUzNy4zNiBFZGcvODQuMC41MjIuNjMiLCJpYXQiOjE1OTgyOTAxMTd9.MhNzt0zPsX0rQSzxBZvdYYOpG_H3b2MJPD70v_m8W8w', '2020-09-24 17:28:37', 1);
 
 -- --------------------------------------------------------
 
@@ -166,7 +175,8 @@ INSERT INTO `cart` (`cart_id`, `user_id`, `created_at`) VALUES
 (9, 1, '2020-08-21 14:26:27'),
 (10, 1, '2020-08-21 14:34:35'),
 (11, 4, '2020-08-21 14:38:28'),
-(12, 4, '2020-08-21 14:41:07');
+(12, 4, '2020-08-21 14:41:07'),
+(13, 5, '2020-08-24 17:04:53');
 
 -- --------------------------------------------------------
 
@@ -278,16 +288,16 @@ CREATE TABLE `order` (
 
 INSERT INTO `order` (`order_id`, `created_at`, `cart_id`, `status`) VALUES
 (1, '2020-08-19 20:42:17', 1, 'shipped'),
-(3, '2020-08-19 21:39:35', 2, 'pending'),
-(4, '2020-08-19 21:40:31', 3, 'pending'),
+(3, '2020-08-19 21:39:35', 2, 'accepted'),
+(4, '2020-08-19 21:40:31', 3, 'accepted'),
 (5, '2020-08-21 12:40:50', 4, 'rejected'),
-(6, '2020-08-21 13:45:48', 5, 'accepted'),
+(6, '2020-08-21 13:45:48', 5, 'shipped'),
 (7, '2020-08-21 13:48:21', 6, 'pending'),
 (8, '2020-08-21 14:01:33', 7, 'pending'),
 (9, '2020-08-21 14:12:32', 8, 'pending'),
 (10, '2020-08-21 14:26:50', 9, 'pending'),
 (11, '2020-08-21 14:34:47', 10, 'pending'),
-(12, '2020-08-21 14:38:56', 11, 'pending'),
+(12, '2020-08-21 14:38:56', 11, 'rejected'),
 (13, '2020-08-21 14:41:26', 12, 'pending');
 
 -- --------------------------------------------------------
@@ -307,10 +317,9 @@ CREATE TABLE `photo` (
 --
 
 INSERT INTO `photo` (`photo_id`, `article_id`, `image_path`) VALUES
-(1, 1, 'images/1/front.jpg'),
-(2, 1, 'images/1/label.jpg'),
-(5, 2, '2020818-1447346854-hard-disk-slika.jpg'),
-(6, 2, '2020818-7534167365-hard-disk-slika-2.jpg');
+(6, 2, '2020818-7534167365-hard-disk-slika-2.jpg'),
+(8, 1, '2020824-7765687387-512gb-ssd-hard-disk-500x500.jpg'),
+(9, 3, '2020824-0752626733-ahevyth9pwrzknpf85mqhb.jpg');
 
 -- --------------------------------------------------------
 
@@ -334,7 +343,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `email`, `password_hash`, `forename`, `surname`, `phone_number`, `postal_address`) VALUES
 (1, 'test@test.rs', '8D2F4D9C7F87141F0810F1ACD6C0462FF0319BB049AA88EA4E310649628091DE316CF1392E19AF4F0A327826545F63E4E969838F5E7D572A475DE3255B738ACA', 'Pera', 'Peric', '+381669999999', 'Nepoznata adresa bb, Glavna Luka, Nedodjija'),
-(4, 'test123@test.rs', 'C70B5DD9EBFB6F51D09D4132B7170C9D20750A7852F00680F65658F0310E810056E6763C34C9A00B0E940076F54495C169FC2302CCEB312039271C43469507DC', 'Milan', 'Milanovic', '+381113000000', 'Nova adresa bb, Glavna Luka, Nedodjija');
+(4, 'test123@test.rs', 'C70B5DD9EBFB6F51D09D4132B7170C9D20750A7852F00680F65658F0310E810056E6763C34C9A00B0E940076F54495C169FC2302CCEB312039271C43469507DC', 'Milan', 'Milanovic', '+381113000000', 'Nova adresa bb, Glavna Luka, Nedodjija'),
+(5, 'sdluka@hotmail.com', 'B109F3BBBC244EB82441917ED06D618B9008DD09B3BEFD1B5E07394C706A8BB980B1D7785E5976EC049B46DF5F1326AF5A2EA6D103FD07C95385FFAB0CACBC86', 'Luka', 'Zivanovic', '+381647777777', 'Neka ulica 2\n11300 SD\nSRB');
 
 -- --------------------------------------------------------
 
@@ -356,7 +366,8 @@ CREATE TABLE `user_token` (
 --
 
 INSERT INTO `user_token` (`user_token_id`, `user_id`, `created_at`, `token`, `expires_at`, `is_valid`) VALUES
-(1, 1, '2020-08-21 17:27:49', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjoxLCJpZGVudGl0eSI6InRlc3RAdGVzdC5ycyIsImV4cCI6MTYwMDcwOTI2OS40MzQsImlwIjoiOjoxIiwidWEiOiJQb3N0bWFuUnVudGltZS83LjI2LjMiLCJpYXQiOjE1OTgwMzA4Njl9.ydTmiQgjt8c022ZOrMAGooXbqpcvewkr5-gOFFOrWlo', '2020-09-21 17:27:49', 1);
+(1, 1, '2020-08-21 17:27:49', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjoxLCJpZGVudGl0eSI6InRlc3RAdGVzdC5ycyIsImV4cCI6MTYwMDcwOTI2OS40MzQsImlwIjoiOjoxIiwidWEiOiJQb3N0bWFuUnVudGltZS83LjI2LjMiLCJpYXQiOjE1OTgwMzA4Njl9.ydTmiQgjt8c022ZOrMAGooXbqpcvewkr5-gOFFOrWlo', '2020-09-21 17:27:49', 1),
+(2, 5, '2020-08-24 17:04:53', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidXNlciIsImlkIjo1LCJpZGVudGl0eSI6InNkbHVrYUBob3RtYWlsLmNvbSIsImV4cCI6MTYwMDk2NzA5My40OTksImlwIjoiOjoxIiwidWEiOiJNb3ppbGxhLzUuMCAoV2luZG93cyBOVCAxMC4wOyBXaW42NDsgeDY0KSBBcHBsZVdlYktpdC81MzcuMzYgKEtIVE1MLCBsaWtlIEdlY2tvKSBDaHJvbWUvODQuMC40MTQ3LjEzNSBTYWZhcmkvNTM3LjM2IEVkZy84NC4wLjUyMi42MyIsImlhdCI6MTU5ODI4ODY5M30.8y-8o24U4l0JfwIstqPoJtt5J4qxUdLp6avr5RcgUko', '2020-09-24 17:04:53', 1);
 
 --
 -- Indexes for dumped tables
@@ -474,7 +485,7 @@ ALTER TABLE `administrator`
 -- AUTO_INCREMENT for table `administrator_token`
 --
 ALTER TABLE `administrator_token`
-  MODIFY `administrator_token_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `administrator_token_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `article`
@@ -498,7 +509,7 @@ ALTER TABLE `article_price`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `cart_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `cart_article`
@@ -528,19 +539,19 @@ ALTER TABLE `order`
 -- AUTO_INCREMENT for table `photo`
 --
 ALTER TABLE `photo`
-  MODIFY `photo_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `photo_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user_token`
 --
 ALTER TABLE `user_token`
-  MODIFY `user_token_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_token_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
